@@ -1,0 +1,44 @@
+receivers:
+  filelog:
+    include: [/var/log/app/sample.log]
+    start_at: beginning
+    operators:
+      - type: regex_parser
+        regex: '^(?P<time>\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}) (?P<sev>[A-Z]*) (?P<msg>.*)$'
+        timestamp:
+          parse_from: attributes.time
+          layout: '%Y-%m-%d %H:%M:%S'
+        severity:
+          parse_from: attributes.sev
+
+    resource:
+      resource1: os.name
+        # need to get hostname into attributes
+
+    attributes:
+      attribute1: value1
+      attribtue2: value2
+
+processors:
+
+  attributes:
+    actions:
+      - action: insert
+        key: loki.attribute.labels
+        value: [log.file.name, attribute1]
+
+  batch:
+
+
+exporters:
+  otlphttp:
+    endpoint: http://otel-collector:4318
+
+  debug:
+
+service:
+  pipelines:
+    logs:
+      receivers: [filelog]
+      processors: [attributes]
+      exporters: [debug, otlphttp]

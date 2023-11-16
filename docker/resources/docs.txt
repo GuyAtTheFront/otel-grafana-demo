@@ -1,0 +1,20 @@
+Otel-collector:
+- Filelog Receiver
+- https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/receiver/filelogreceiver/README.md
+
+    - regex-parser
+    - https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/pkg/stanza/docs/operators/regex_parser.md
+
+- OTLP/HTTP Exporter
+- https://github.com/open-telemetry/opentelemetry-collector/tree/main/exporter/otlphttpexporter
+
+- Troubleshooting Otel-collector
+- https://opentelemetry.io/docs/collector/troubleshooting/
+
+
+Grafana:
+- Provision dashboards from config
+- https://grafana.com/tutorials/provision-dashboards-and-data-sources/
+
+- Setting up Loki datasource
+- https://grafana.com/docs/grafana/latest/datasources/loki/
