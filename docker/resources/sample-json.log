@@ -1,0 +1,8 @@
+{"level":"info","message":"info info","timestamp":"2023-11-39T14:15:00.123Z"}
+{"level":"debug","message":"debug debug","timestamp":"2023-11-39T14:15:00.123Z"}
+{"level":"warn","message":"warn warn","timestamp":"2023-11-39T14:15:00.123Z"}
+{"level":"error","message":"error error","timestamp":"2023-11-39T14:15:00.123Z"}
+{"meta": "","level":"info","message":"meta info info","timestamp":"2023-11-39T14:15:00.123Z"}
+{"meta": "","level":"debug","message":"meta debug debug","timestamp":"2023-11-39T14:15:00.123Z"}
+{"meta": "","level":"warn","message":"meta warn warn","timestamp":"2023-11-39T14:15:00.123Z"}
+{"meta": "","level":"error","message":"meta error error","timestamp":"2023-11-39T14:15:00.123Z"}

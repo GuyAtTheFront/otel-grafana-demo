@@ -1,0 +1,45 @@
+# {"level":"error","message":"error error","timestamp":"2023-11-39T14:15:00:123Z"}
+
+receivers:
+  filelog:
+    include: [/var/log/app/sample-json.log]
+    start_at: beginning
+    operators:
+      - type: json_parser
+        timestamp:
+          parse_from: attributes.timestamp
+          layout: '%Y-%m-%dT%H:%M:%S.%L'  
+        severity:
+          parse_from: attributes.level
+
+    resource:
+      resource1: os.name
+        # need to get hostname into attributes
+
+    attributes:
+      attribute1: value1
+      attribtue2: value2
+
+processors:
+
+  attributes:
+    actions:
+      - action: insert
+        key: loki.attribute.labels
+        value: [log.file.name, attribute1]
+
+  batch:
+
+
+exporters:
+  otlphttp:
+    endpoint: http://otel-collector:4318
+
+  debug:
+
+service:
+  pipelines:
+    logs:
+      receivers: [filelog]
+      processors: [attributes]
+      exporters: [debug, otlphttp]
