@@ -1,4 +1,4 @@
-2023-11-11 08:16:50 ERROR This is a test error message 11111111111111
-2023-11-11 08:16:00 DEBUG This is a test debug message 22222222222222
-2023-11-11 09:16:50 ERROR This is a test error message 33333333333333
-2023-11-11 09:16:00 DEBUG This is a test debug message 44444444444444
+2023-11-30 15:16:50.123 [ERROR] This is a test error message 11111111111111
+2023-11-30 15:16:00.123 [DEBUG] This is a test debug message 22222222222222
+2023-11-30 15:16:50.123 [ERROR] This is a test error message 33333333333333
+2023-11-30 15:16:00.123 [DEBUG] This is a test debug message 44444444444444
