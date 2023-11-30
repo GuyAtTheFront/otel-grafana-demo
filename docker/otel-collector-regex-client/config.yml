@@ -7,7 +7,7 @@ receivers:
         regex: '^(?P<time>\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}.\d{3}) \[?(?P<sev>[A-Z]*)\]? (?P<msg>.*)$'
         timestamp:
           parse_from: attributes.time
-          layout: '%Y-%m-%d %H:%M:%S'
+          layout: '%Y-%m-%d %H:%M:%S.%L'
         severity:
           parse_from: attributes.sev
 
