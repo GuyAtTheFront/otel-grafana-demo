@@ -37,6 +37,42 @@ services:
       - ./docker/otel-collector-json-client/config.yml:/etc/otelcol-contrib/config.yml
       - ./docker/resources/sample-json.log:/var/log/app/sample.log
 
+  otel-soph-regex-client:
+    container_name: otel-soph-regex-client
+    image: otel/opentelemetry-collector-contrib:0.88.0
+    restart: always
+    command:
+      - --config=/etc/otelcol-contrib/config.yml
+    volumes:
+      - ./docker/otel-soph-regex-client/config.yml:/etc/otelcol-contrib/config.yml
+      - ./docker/resources/soph-regex.log:/var/log/app/soph-regex.log
+    environment:
+      - HOSTNAME=${HOSTNAME}
+
+  otel-h1-regex-client:
+    container_name: otel-h1-regex-client
+    image: otel/opentelemetry-collector-contrib:0.88.0
+    restart: always
+    command:
+      - --config=/etc/otelcol-contrib/config.yml
+    volumes:
+      - ./docker/otel-h1-regex-client/config.yml:/etc/otelcol-contrib/config.yml
+      - ./docker/resources/h1-regex.log:/var/log/app/h1-regex.log
+    environment:
+      - HOSTNAME=${HOSTNAME}
+
+  otel-agent-regex-multi-client:
+    container_name: otel-agent-regex-multi-client
+    image: otel/opentelemetry-collector-contrib:0.88.0
+    restart: always
+    command:
+      - --config=/etc/otelcol-contrib/config.yml
+    volumes:
+      - ./docker/otel-agent-regex-multi-client/config.yml:/etc/otelcol-contrib/config.yml
+      - ./docker/resources/agent-regex-multi.log:/var/log/hydra/agent-regex-multi.log
+    environment:
+      - HOSTNAME=${HOSTNAME}
+
   loki:
     container_name: loki
     image: grafana/loki:latest

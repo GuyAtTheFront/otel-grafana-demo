@@ -1,0 +1,44 @@
+receivers:
+  filelog:
+    include: [/var/log/app/h1-regex.log]
+    start_at: beginning
+    operators:
+      - type: regex_parser
+        regex: '^\[?(?P<sev>[A-Z]*)\]?: (?P<msg>.*)$'
+        severity:
+          parse_from: attributes.sev
+
+    resource:
+      deployment.env: "dev"
+      service.name: "hydra"
+      service.version: "1.0.1"
+      host.name: ${env:HOSTNAME}
+
+    attributes:
+
+processors:
+  resource:
+    attributes:
+      - action: insert
+        key: sev
+        from_context: attributes.sev
+      - action: insert
+        key: loki.resource.labels
+          #        value: [deployment.env, service.name, host.name, file.name]
+        value: deployment.env
+
+
+  batch:
+
+exporters:
+  otlphttp:
+    endpoint: http://otel-collector:4318
+
+  debug:
+
+service:
+  pipelines:
+    logs:
+      receivers: [filelog]
+      processors: [resource]
+      exporters: [debug, otlphttp]

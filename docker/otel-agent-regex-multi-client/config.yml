@@ -1,0 +1,90 @@
+# Fri, 24 Nov 2023 11:15:06 GMT info agent v@1.8.2 env:SIT starting
+# mongodb://env.domain/app
+# Process 12345 initialized connection to test at testdb://env.domain/app
+# Testdb Connected!!!
+# Process 12345 is the Agent-Master
+# Fri, 24 Nov 2023 11:15:07 GMT info agent v@1.8.2 env:SIT starting
+# testdb://env.domain/app
+
+receivers:
+  filelog:
+    include: [/var/log/hydra/agent-regex-multi.log]
+    start_at: beginning
+    multiline:
+      line_start_pattern: '^[a-zA-Z]{3}, \d{2} [a-zA-Z]{3} \d{4}'
+    operators:
+      - type: regex_parser
+        regex: '^[a-zA-Z]{3}, (?P<time>\d{2} [a-zA-Z]{3} \d{4} \d{2}:\d{2}:\d{2}) (?P<timezone>[a-zA-Z]{3}) (?P<sev>[a-zA-Z]*) (?P<msg>.*)'
+        timestamp:
+          parse_from: attributes.time
+          layout: '%d %b %Y %H:%M:%S'
+        severity:
+          parse_from: attributes.sev
+
+            #      - type: move
+            #        from: attributes.log.file.name
+            #        to: resource.attributes.filename
+
+        #    resource:
+        #      deployment.env: "dev"
+        #      service.name: "hydra"
+        #      service.version: "1.0.1"
+        #      host.name: ${env:HOSTNAME}
+        #        #      file.name: attributes.log.file.name
+        #
+        #    attributes:
+
+processors:
+  transform:
+    error_mode: ignore  # ignore, silent, propagate
+    log_statements:
+      - context: log
+        statements:
+          - set(attributes["testing"], "123")
+          - set(attributes["message"], body)
+
+  attributes:
+    actions:
+      #      - action: extract
+      #        key: "message"
+      #        pattern: '^[a-zA-Z]{3}, (?P<time>\d{2} [a-zA-Z]{3} \d{4} \d{2}:\d{2}:\d{2}) (?P<timezone>[a-zA-Z]{3}) (?P<sev>[a-zA-Z]*) (?P<msg>.*)'
+          #        pattern: ^(?P<extracted>[a-zA-Z]*) .*$
+
+      - action: insert
+        key: "http.url"
+        value: "http://example.com/path?queryParam1=value1,queryParam2=value2"
+
+      - action: extract
+        key: "http.url"
+        pattern: ^(?P<http_protocol>.*):\/\/(?P<http_domain>.*)\/(?P<http_path>.*)[\?|\&](?P<http_query_params>.*)
+
+  #  attributes:
+  #    actions:
+  #      - action: delete
+  #        key: abc
+  #
+  #  resource:
+  #    attributes:
+  #      - action: insert
+  #        key: sev
+  #        from_context: attributes.sev
+  #      - action: insert
+  #        key: loki.resource.labels
+  #          #        value: [deployment.env, service.name, host.name, file.name]
+  #        value: deployment.env
+
+
+  batch:
+
+exporters:
+  otlphttp:
+    endpoint: http://otel-collector:4318
+
+  debug:
+
+service:
+  pipelines:
+    logs:
+      receivers: [filelog]
+      processors: []
+      exporters: [debug, otlphttp]

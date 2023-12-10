@@ -1,0 +1,3 @@
+          warning : ServiceName[tag]@HOSTNAME (1234.1dac) : [2023/12/06-17:14:41.392] : API : Command executed, exiting
+          info : ServiceName[tag]@HOSTNAME (1234.1dac) : [2023/12/06-17:14:40.907] : calculations::method() : message
+          info : ServiceName[tag]@HOSTNAME (1234.1dac) : [2023/12/06-17:14:49.220] : ABCAPI::method()() : Connection ABC@123 (connected) executed 1234 statements, fetched 999 rows in 22 calls, and processed (updated/insert) 888 rows in 20 calls (counting also one call by query fetching data).

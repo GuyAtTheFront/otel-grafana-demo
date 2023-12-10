@@ -1,0 +1,7 @@
+Fri, 10 Dec 2023 18:20:06 GMT info agent v@1.8.2 env:SIT starting
+mongodb://env.domain/app
+Process 12345 initialized connection to test at testdb://env.domain/app
+Testdb Connected!!!
+Process 12345 is the Agent-Master
+Fri, 10 Dec 2023 18:20:07 GMT info agent v@1.8.2 env:SIT starting
+testdb://env.domain/app
