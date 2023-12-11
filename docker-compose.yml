@@ -69,7 +69,19 @@ services:
       - --config=/etc/otelcol-contrib/config.yml
     volumes:
       - ./docker/otel-agent-regex-multi-client/config.yml:/etc/otelcol-contrib/config.yml
-      - ./docker/resources/agent-regex-multi.log:/var/log/hydra/agent-regex-multi.log
+      - ./docker/resources/agent-regex-multi.log:/var/log/app/agent-regex-multi.log
+    environment:
+      - HOSTNAME=${HOSTNAME}
+
+  otel-combined-parser:
+    container_name: otel-combined-parser
+    image: otel/opentelemetry-collector-contrib:0.88.0
+    restart: always
+    command:
+      - --config=/etc/otelcol-contrib/config.yml
+    volumes:
+      - ./docker/otel-combined-parser/config.yml:/etc/otelcol-contrib/config.yml
+      - ./docker/resources:/var/log/app
     environment:
       - HOSTNAME=${HOSTNAME}
 

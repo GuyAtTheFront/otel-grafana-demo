@@ -1,6 +1,6 @@
 receivers:
   filelog:
-    include: [/var/log/hydra/soph-regex.log]
+    include: [/var/log/app/soph-regex.log]
     start_at: beginning
     operators:
       - type: regex_parser

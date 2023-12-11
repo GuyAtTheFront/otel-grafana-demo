@@ -8,7 +8,7 @@
 
 receivers:
   filelog:
-    include: [/var/log/hydra/agent-regex-multi.log]
+    include: [/var/log/app/agent-regex-multi.log]
     start_at: beginning
     multiline:
       line_start_pattern: '^[a-zA-Z]{3}, \d{2} [a-zA-Z]{3} \d{4}'

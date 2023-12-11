@@ -1,0 +1,72 @@
+receivers:
+
+  filelog/regex:
+    include: [/var/log/app/sample.log]
+    start_at: beginning
+    operators:
+      - type: regex_parser
+        regex: '^(?P<time>\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}.\d{3}) \[?(?P<sev>[A-Z]*)\]? (?P<msg>.*)$'
+        timestamp:
+          parse_from: attributes.time
+          layout: '%Y-%m-%d %H:%M:%S.%L'
+        severity:
+          parse_from: attributes.sev
+
+    attributes:
+      service.name: regex
+      service.version: 1.0.1
+
+  filelog/json:
+    include:
+      - /var/log/app/sample-json.log
+    start_at: beginning
+    operators:
+      - type: json_parser
+        timestamp:
+          parse_from: attributes.timestamp
+          layout: '%Y-%m-%dT%H:%M:%S.%LZ'
+        severity:
+          parse_from: attributes.level
+
+    attributes:
+      service.name: json
+      service.version: 1.0.2
+
+processors:
+
+  attributes:
+    actions:
+      - action: insert
+        key: loki.attribute.labels
+        value: [log.file.name, attribute1]
+      - action: insert
+        key: loki.attribute.labels
+        value: resource.resource1
+      - action: insert
+        key: loki.attribute.labels
+        value: attributes.attribute1
+
+  resource:
+    attributes:
+      - action: insert
+        key: hostname
+        value: ${env:HOSTNAME}
+      - action: insert
+        key: mode
+        value: combined
+
+
+  batch:
+
+exporters:
+  otlphttp:
+    endpoint: http://otel-collector:4318
+
+  debug:
+
+service:
+  pipelines:
+    logs:
+      receivers: [filelog/json, filelog/regex]
+      processors: [attributes, resource]
+      exporters: [debug, otlphttp]
